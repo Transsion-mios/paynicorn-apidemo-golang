@@ -11,8 +11,8 @@ import (
 )
 
 
-var MERCHANT_SCRECT = "PUT_YOUR_MERCHANT_MD5_SECRET_KEY_HERE"
-var APP_KEY = "PUT_YOUR_APP_KEY_HERE"
+var MERCHANT_SCRECT = "9c68463391a6463fb8f2f3da56a17146"
+var APP_KEY = "K7684mT7Pvr7Rr6TSPfv"
 
 
 
@@ -56,7 +56,7 @@ type ResponseBody struct{
 
 
 
-func PaymentDemo(countryCode string,orderId string,orderDescription string,currency string,amount string)string{
+func PaymentDemo(countryCode string,orderId string,orderDescription string,currency string,amount string,appkey string,merchantsecret string)string{
 
 	c := Content{}
 
@@ -70,7 +70,7 @@ func PaymentDemo(countryCode string,orderId string,orderDescription string,curre
 
 	b.Content = c.GetContentBase64()
 	b.Sign = fmt.Sprintf("%x",md5.Sum([]byte(b.Content+MERCHANT_SCRECT)))
-	b.AppKey = APP_KEY
+	b.AppKey = appkey
 
 
 
@@ -103,7 +103,7 @@ func PaymentDemo(countryCode string,orderId string,orderDescription string,curre
 
 	if rsp.ResponseCode == "000000"{
 
-		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+MERCHANT_SCRECT))); sign == rsp.Sign{
+		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+merchantsecret))); sign == rsp.Sign{
 
 			content, err := base64.StdEncoding.DecodeString(rsp.Content)
 			if err == nil {
@@ -150,7 +150,7 @@ func PostbackDemo(content string,sign string)*Postback{
 }
 
 
-func QueryDemo(orderId string,txnType string)string{
+func QueryDemo(orderId string,txnType string,appkey string,merchantsecret string)string{
 
 	c := Content{}
 	c.AddContent("orderId",orderId)
@@ -160,7 +160,7 @@ func QueryDemo(orderId string,txnType string)string{
 
 	b.Content = c.GetContentBase64()
 	b.Sign = fmt.Sprintf("%x",md5.Sum([]byte(b.Content+MERCHANT_SCRECT)))
-	b.AppKey = APP_KEY
+	b.AppKey = appkey
 
 
 
@@ -193,7 +193,7 @@ func QueryDemo(orderId string,txnType string)string{
 
 	if rsp.ResponseCode == "000000"{
 
-		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+MERCHANT_SCRECT))); sign == rsp.Sign{
+		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+merchantsecret))); sign == rsp.Sign{
 
 			content, err := base64.StdEncoding.DecodeString(rsp.Content)
 			if err == nil {
