@@ -56,7 +56,7 @@ type ResponseBody struct{
 
 
 
-func PaymentDemo(countryCode string,orderId string,orderDescription string,currency string,amount string,appkey string,merchantsecret string)string{
+func PaymentDemo(countryCode string,orderId string,orderDescription string,currency string,amount string)string{
 
 	c := Content{}
 
@@ -70,7 +70,7 @@ func PaymentDemo(countryCode string,orderId string,orderDescription string,curre
 
 	b.Content = c.GetContentBase64()
 	b.Sign = fmt.Sprintf("%x",md5.Sum([]byte(b.Content+MERCHANT_SCRECT)))
-	b.AppKey = appkey
+	b.AppKey = APP_KEY
 
 
 
@@ -103,7 +103,7 @@ func PaymentDemo(countryCode string,orderId string,orderDescription string,curre
 
 	if rsp.ResponseCode == "000000"{
 
-		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+merchantsecret))); sign == rsp.Sign{
+		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+MERCHANT_SCRECT))); sign == rsp.Sign{
 
 			content, err := base64.StdEncoding.DecodeString(rsp.Content)
 			if err == nil {
@@ -150,7 +150,7 @@ func PostbackDemo(content string,sign string)*Postback{
 }
 
 
-func QueryDemo(orderId string,txnType string,appkey string,merchantsecret string)string{
+func QueryDemo(orderId string,txnType string)string{
 
 	c := Content{}
 	c.AddContent("orderId",orderId)
@@ -160,7 +160,7 @@ func QueryDemo(orderId string,txnType string,appkey string,merchantsecret string
 
 	b.Content = c.GetContentBase64()
 	b.Sign = fmt.Sprintf("%x",md5.Sum([]byte(b.Content+MERCHANT_SCRECT)))
-	b.AppKey = appkey
+	b.AppKey = APP_KEY
 
 
 
@@ -193,7 +193,7 @@ func QueryDemo(orderId string,txnType string,appkey string,merchantsecret string
 
 	if rsp.ResponseCode == "000000"{
 
-		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+merchantsecret))); sign == rsp.Sign{
+		if sign := fmt.Sprintf("%x",md5.Sum([]byte(rsp.Content+MERCHANT_SCRECT))); sign == rsp.Sign{
 
 			content, err := base64.StdEncoding.DecodeString(rsp.Content)
 			if err == nil {

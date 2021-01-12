@@ -29,10 +29,9 @@ func main() {
 		orderDescription := context.Query("orderDescription")
 		currency := context.Query("currency")
 		amount := context.Query("amount")
-		appKey := context.Query("appkey")
-		merchantSecret := context.Query("merchantsecret")
 
-		context.JSON(http.StatusOK,demo.PaymentDemo(countryCode,orderId,orderDescription,currency,amount,appKey,merchantSecret))
+
+		context.JSON(http.StatusOK,demo.PaymentDemo(countryCode,orderId,orderDescription,currency,amount))
 
 	})
 
@@ -53,10 +52,9 @@ func main() {
 
 		orderId := context.Query("orderId")
 		txnType := context.Query("txnType")
-		appKey := context.Query("appkey")
-		merchantSecret := context.Query("merchantsecret")
 
-		context.JSON(http.StatusOK,demo.QueryDemo(orderId,txnType,appKey,merchantSecret))
+
+		context.JSON(http.StatusOK,demo.QueryDemo(orderId,txnType))
 
 	})
 
